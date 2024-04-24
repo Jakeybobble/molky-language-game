@@ -1,0 +1,31 @@
+#bar-list {
+    display: flex;
+    height: 100%;
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+#bar-list li {
+    color: white;
+    width: 112px; height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: 0.3s;
+}
+
+#bar-list li a {
+    color: inherit;
+    font-family:'Courier New';
+}
+
+#bar-list li:hover {
+    background-color: white;
+    color: black;
+}
+
+html, body {
+    height: 100%;
+    overflow: hidden;
+}
