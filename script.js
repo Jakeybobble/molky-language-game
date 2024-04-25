@@ -1,7 +1,6 @@
 /// Custom elements ///
 
-customElements.define(
-    "drop-box",
+customElements.define("drop-box",
     class extends HTMLElement {
         constructor() {
             super();
@@ -44,8 +43,7 @@ customElements.define(
     },
 );
 
-customElements.define(
-    "draggable-box",
+customElements.define("draggable-box",
     class extends HTMLElement {
         constructor() {
             super();
@@ -91,14 +89,17 @@ customElements.define("view-loading", class extends HTMLElement {
         shadowRoot.appendChild(document.getElementById("view-loading").content.cloneNode(true));
     }
 
-    enable() {
+    enable(_function) {
         console.log("Enabling very real loading screen.");
         let background = this.shadowRoot.getElementById("loading-background");
         background.style.display = "flex";
-        background.style.animation = "show-loading 1s ease";
+        background.style.animation = "show-loading 1s";
 
         setTimeout(() => {
-            // Start game loop
+            // run _function
+            if(_function != null) {
+                _function();
+            }
         }, 1200);
 
         setTimeout(() => {
@@ -130,15 +131,61 @@ customElements.define("view-info", class extends HTMLElement {
     }
 });
 
+customElements.define("view-game-setup", class extends HTMLElement {
+    constructor() {
+        super();
+
+        const shadowRoot = this.attachShadow({ mode: "open" });
+        shadowRoot.appendChild(document.getElementById("view-game-setup").content.cloneNode(true));
+
+        let button = shadowRoot.getElementById("add-button");
+        this.textbox = shadowRoot.getElementById("textbox");
+        
+        button.addEventListener("click", () => {
+            this.addEntry(this.textbox.value);
+        });
+    }
+
+    addEntry(_input) {
+        if(_input.length == 0) return;
+        console.log("Adding sentence '" + _input + "'...");
+        let entries = document.getElementById("entries");
+        let entry = document.createElement("setup-entry");
+        let p = document.createElement("p");
+        p.innerText = _input;
+        p.slot = "text";
+        entry.appendChild(p);
+        entries.appendChild(entry);
+
+    }
+});
+
+customElements.define("setup-entry", class extends HTMLElement {
+    constructor() {
+        super();
+
+        const shadowRoot = this.attachShadow({ mode: "open" });
+        shadowRoot.appendChild(document.getElementById("setup-entry").content.cloneNode(true));
+
+        this.delete_button = shadowRoot.getElementById("delete-button");
+        this.delete_button.addEventListener("click", () => {
+            this.remove();
+        });
+
+    }
+});
+
 /// Other code. ///
 
-function showLoading() {
+function showLoading(_function) {
     let loading = document.getElementById("loading-view");
-    loading.enable();
+    loading.enable(_function);
 }
 
 function startGame() {
-    showLoading();
+    // Så rörigt.
+    //showLoading();
+    setState("game-setup");
 }
 
 function showInfo() {
@@ -149,4 +196,38 @@ function showInfo() {
 function showTutorial() {
     console.log("Showing tutorial screen.");
     document.getElementById("tutorial").background.style.display = "flex";
+}
+
+// _view: string
+function setState(_view) {
+    // I am so not proud of this system.
+    let views = document.getElementById("views");
+
+    switch(_view){
+        case "start":
+            hideAll();
+            let start = views.children[0];
+            start.style.display = "block";
+            break;
+        case "game-setup":
+            let game_setup = views.children[1];
+            showLoading(() => {
+                hideAll();
+                game_setup.style.display = "block";
+                console.log("heck");
+            });
+            
+            break;
+    }
+}
+
+function hideAll() {
+    let views = document.getElementById("views");
+    for(let _c of views.children){
+        _c.style.display = "none";
+    }
+}
+
+function onPageLoad() {
+    //setState("start");
 }
