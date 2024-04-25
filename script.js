@@ -147,6 +147,15 @@ customElements.define("view-game-setup", class extends HTMLElement {
         });
 
         start_button.addEventListener("click", () => {
+            let entries = document.getElementById("entries");
+            phrases = [];
+            for(let _c of entries.children) {
+                let value = _c.children[0].innerText;
+                phrases.push(value);
+            }
+            console.log(phrases);
+            phrases = phrases.sort((a, b) => 0.5 - Math.random());
+            console.log(phrases);
             setState("game");
         });
     }
@@ -161,9 +170,12 @@ customElements.define("view-game-setup", class extends HTMLElement {
         p.slot = "text";
         entry.appendChild(p);
         entries.appendChild(entry);
+        this.textbox.value = "";
 
     }
 });
+
+let phrases = [];
 
 customElements.define("setup-entry", class extends HTMLElement {
     constructor() {
