@@ -140,9 +140,14 @@ customElements.define("view-game-setup", class extends HTMLElement {
 
         let button = shadowRoot.getElementById("add-button");
         this.textbox = shadowRoot.getElementById("textbox");
+        let start_button = shadowRoot.getElementById("start-button");
         
         button.addEventListener("click", () => {
             this.addEntry(this.textbox.value);
+        });
+
+        start_button.addEventListener("click", () => {
+            setState("game");
         });
     }
 
@@ -223,10 +228,16 @@ function setState(_view) {
             showLoading(() => {
                 hideAll();
                 game_setup.style.display = "block";
-                console.log("heck");
             });
             
             break;
+        case "game": {
+            let game = views.children[2];
+            showLoading(() => {
+                hideAll();
+                game.style.display = "block";
+            });
+        }
     }
 }
 
