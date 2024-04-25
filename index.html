@@ -133,7 +133,7 @@
                     padding: 12px 20px;
                     font-size: large;
                 }
-                #add-button {
+                #add-button, #start-button {
                     height: 50px;
                     width: 75px;
                     background-color: #602482;
@@ -145,8 +145,12 @@
                     transition: 0.2s;
                     
                 }
-                #add-button:hover {
+                #add-button:hover, #start-button:hover {
                     background-color: #7f499e;
+                }
+
+                #start-button {
+                    margin: 20px;
                 }
 
                 ::slotted(div) {
@@ -162,7 +166,7 @@
                     <div id="add-button">Add</div>
                 </div>
                 <slot name="entries"></slot>
-                
+                <div id="start-button">Start</div>
             </div>
         </template>
 
@@ -234,6 +238,15 @@
             </div>
         </template>
 
+        <template id="view-game">
+            <style>
+
+            </style>
+            <div>
+                
+            </div>
+        </template>
+
         <!-- Actual body content -->
 
         <view-loading id="loading-view"></view-loading>
@@ -266,10 +279,11 @@
                 <view-start id="start" style="display: none;"></view-start>
                 <view-game-setup id="game-setup" style="display: flex; justify-content: center;">
                     <div slot="entries" id="entries">
-                        <setup-entry><p slot="text">This is an example sentence!</p></setup-entry>
-                        <setup-entry><p slot="text">Heck!</p></setup-entry>
-                        <setup-entry><p slot="text">What if I decided to randomly add a bunch of long text!? Huh? What would you do?</p></setup-entry>
+                        <setup-entry><p slot="text">How are you doing?</p></setup-entry>
                     </div>
+                </view-game-setup>
+                <view-game id="game" style="display: none;">
+                    
                 </view-game>
             </div>
             <!--

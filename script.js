@@ -175,6 +175,15 @@ customElements.define("setup-entry", class extends HTMLElement {
     }
 });
 
+customElements.define("view-game", class extends HTMLElement {
+    constructor() {
+        super();
+        
+        const shadowRoot = this.attachShadow({ mode: "open" });
+        shadowRoot.appendChild(document.getElementById("view-game").content.cloneNode(true));
+    }
+});
+
 /// Other code. ///
 
 function showLoading(_function) {
