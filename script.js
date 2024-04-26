@@ -185,6 +185,7 @@ customElements.define("view-game-setup", class extends HTMLElement {
 });
 
 let phrases = ["Testing sentence number one.", "This is test number two."];
+let guessed_phrases = [];
 
 customElements.define("setup-entry", class extends HTMLElement {
     constructor() {
@@ -217,6 +218,7 @@ customElements.define("view-game", class extends HTMLElement {
         this.boxes = this.shadowRoot.getElementById("boxes");
 
         shadowRoot.getElementById("next-button").addEventListener("click", () => {
+            guessed_phrases.push(this.getCompleteString());
             this.nextRound();
         });
 
