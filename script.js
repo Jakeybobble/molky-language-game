@@ -23,6 +23,7 @@ customElements.define("drop-box",
             event.preventDefault();
             let data = event.dataTransfer.getData("text");
             const box = document.getElementById(data);
+            console.log(box);
             if(box) {
                 // Detta frigör EventListeners som inte vill tas bort på annat sätt.
                 let a = box.cloneNode(true);
@@ -37,7 +38,7 @@ customElements.define("drop-box",
         }
 
         disconnectedCallback() {
-            this.shadowRoot.getElementById("box").removeEventListener("drop", this._dropEvent).removeEventListener("dragover", this._dragoverEvent);
+            //this.shadowRoot.getElementById("box").removeEventListener("drop", this._dropEvent).removeEventListener("dragover", this._dragoverEvent);
         }
         
     },
@@ -153,9 +154,9 @@ customElements.define("view-game-setup", class extends HTMLElement {
                 let value = _c.children[0].innerText;
                 phrases.push(value);
             }
-            console.log(phrases);
+            //console.log(phrases);
             phrases = phrases.sort((a, b) => 0.5 - Math.random());
-            console.log(phrases);
+            //console.log(phrases);
             setState("game");
         });
     }
@@ -175,7 +176,7 @@ customElements.define("view-game-setup", class extends HTMLElement {
     }
 });
 
-let phrases = [];
+let phrases = ["Testing sentence number one.", "This is test number two."];
 
 customElements.define("setup-entry", class extends HTMLElement {
     constructor() {
@@ -198,6 +199,59 @@ customElements.define("view-game", class extends HTMLElement {
         
         const shadowRoot = this.attachShadow({ mode: "open" });
         shadowRoot.appendChild(document.getElementById("view-game").content.cloneNode(true));
+
+        this.round = 0;
+        this.round_counter = shadowRoot.getElementById("round");
+        this.nextRound();
+        
+        shadowRoot.getElementById("next-button").addEventListener("click", () => {
+            this.nextRound();
+        });
+
+    }
+
+    nextRound() {
+        if(this.round != phrases.length) this.round++;
+        
+        this.round_counter.innerHTML = this.getRoundString();
+        let words = phrases[this.round-1].split(" ");
+        words = words.sort((a, b) => 0.5 - Math.random());
+
+        let drop_field = this.shadowRoot.getElementById("drop-field");
+        let boxes_field = this.shadowRoot.getElementById("boxes-field");
+
+        // Clean up
+        drop_field.innerHTML = '';
+        boxes_field.innerHTML = '';
+
+        // Create boxes
+        let id_num = 0;
+        for(let word of words) {
+            
+            // Create each box in each word thing...
+            let box = document.createElement("drop-box");
+            drop_field.appendChild(box);
+
+            let bottom_box = document.createElement("drop-box");
+            let draggable = document.createElement("draggable-box");
+            draggable.slot = "box-content";
+            draggable.id = "box-" + (id_num++);
+            let p = document.createElement("p");
+            p.innerText = word;
+            p.slot = "text";
+
+            bottom_box.appendChild(draggable);
+            draggable.appendChild(p);
+            boxes_field.appendChild(bottom_box);
+        }
+    }
+
+    validate() {
+
+    }
+
+    getRoundString() {
+        return "Phrase " + (this.round) + "/" + phrases.length;
     }
 });
 
