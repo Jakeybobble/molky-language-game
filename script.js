@@ -260,7 +260,7 @@ customElements.define("view-game", class extends HTMLElement {
         }
     }
 
-    validate() {
+    calculateScore() { 
 
     }
 
