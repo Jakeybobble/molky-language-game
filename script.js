@@ -309,6 +309,13 @@ customElements.define("view-complete", class extends HTMLElement {
     }
 });
 
+customElements.define("pink-lizard", class extends HTMLElement {
+    constructor() {
+        super(); const shadowRoot = this.attachShadow({mode: "open" });
+        shadowRoot.appendChild(document.getElementById("pink-lizard").content.cloneNode(true));
+    }
+});
+
 /// Other code. ///
 
 function showLoading(_function) {
@@ -345,12 +352,6 @@ function setState(_view) {
             break;
         case "game-setup":
             let game_setup = views.children[1];
-            /*
-            showLoading(() => {
-                hideAll();
-                game_setup.style.display = "block";
-            });
-            */
            hideAll();
            game_setup.style.display = "flex";
             

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
     <head>
         <title>Här</title>
         <script src="script.js"></script>
@@ -314,13 +314,34 @@
                     flex-direction: column;
                     align-items: center;
                 }
+                #restart-button {
+                    width: 169px; height: 48px;
+                    background-color: #602482;
+                    color: white;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    user-select: none;
+                    transition: 0.2s;
+                }
+                #restart-button:hover {
+                    background-color: #7f499e;
+                }
             </style>
             <div id="box">
                 <h2>Game complete!</h2>
                 <h3>You got x out of x phrases correct...</h3>
                 <slot name="errors"></slot>
                 <slot name="lizard"></slot>
+                <div id="restart-button">Restart</div>
             </div>
+        </template>
+
+        <template id="pink-lizard">
+            <picture>
+                <source srcset="lizard-silly.png" media="(max-width: 500px)">
+                <img src="lizard-big.png" alt="Winning lizard says nice!" style="width: 100%; height: auto;">
+            </picture>
         </template>
 
         <!-- Actual body content -->
@@ -367,10 +388,7 @@
                         <ul id="error-list">
                             <li class="error-list-item">Bla bla</li>
                         </ul>
-                        <picture>
-                            <source srcset="lizard-silly.png" media="(max-width: 500px)">
-                            <img src="lizard-big.png" alt="Winning lizard says hello." style="width: 100%; height: auto;">
-                        </picture>
+                        <pink-lizard style="width: 50%;"></pink-lizard>
                     </div>
                 </view-complete>
             </div>
