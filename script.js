@@ -253,9 +253,10 @@ customElements.define("view-game", class extends HTMLElement {
             p.innerText = word;
             p.slot = "text";
 
-            bottom_box.appendChild(draggable);
             draggable.appendChild(p);
-            this.boxes_field.appendChild(bottom_box);
+            //bottom_box.appendChild(draggable);
+            
+            this.boxes_field.appendChild(draggable);
         }
     }
 
