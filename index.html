@@ -62,6 +62,8 @@
                     color: white;
                     transition: 0.3s;
                     border-radius: 10px;
+                    height: 48px;
+                    width: 96px;
                 }
                 button:hover {
                     background-color: darkslategray;
@@ -69,6 +71,7 @@
                 #buttons {
                     display: flex;
                     justify-content: space-evenly;
+                    flex-wrap: wrap;
                 }
             </style>
             <div id="thing">
@@ -329,7 +332,7 @@
 
         <div id="middle-body" class="container">
             <div id="views">
-                <view-start id="start" style="display: none;"></view-start>
+                <view-start id="start" style="display: flex; align-content: center; justify-content: center;"></view-start>
                 <view-game-setup id="game-setup" style="display: none; justify-content: center;">
                     <div slot="entries" id="entries">
                         <setup-entry><p slot="text">How are you doing?</p></setup-entry>
@@ -339,7 +342,7 @@
                         <setup-entry><p slot="text">Heck.</p></setup-entry>
                     </div>
                 </view-game-setup>
-                <view-game id="game" style="display: flex;">
+                <view-game id="game" style="display: none;">
                     <div id="drop-field" slot="drop-field"></div>
                     <div id="boxes-field" slot="boxes-field"></div>
                 </view-game>

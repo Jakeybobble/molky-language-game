@@ -314,21 +314,25 @@ function setState(_view) {
         case "start":
             hideAll();
             let start = views.children[0];
-            start.style.display = "block";
+            start.style.display = "flex";
             break;
         case "game-setup":
             let game_setup = views.children[1];
+            /*
             showLoading(() => {
                 hideAll();
                 game_setup.style.display = "block";
             });
+            */
+           hideAll();
+           game_setup.style.display = "flex";
             
             break;
         case "game": {
             let game = views.children[2];
             showLoading(() => {
                 hideAll();
-                game.style.display = "block";
+                game.style.display = "flex";
             });
         }
     }
