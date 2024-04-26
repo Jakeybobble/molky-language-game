@@ -31,6 +31,10 @@
                     width: 128px; height: 64px;
                     background-color: crimson;
                 }
+                ::slotted(p) {
+                    user-select: none;
+                    color: white;
+                }
             </style>
             <div id="draggable" draggable="true">
                 <slot name="text"></slot>
@@ -272,21 +276,23 @@
                     margin: 10px;
                 }
 
+                ::slotted(#drop-field), ::slotted(#boxes-field) {
+                    margin: 10px;
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: center;
+                }
+                ::slotted(#drop-field drop-box), ::slotted(#boxes-field drop-box) {
+                    margin: 10px;
+                }
+
             </style>
             <div id="box">
                 <h2 id="round">Phrase 1/5</h2>
                 <div id="next-button">Next</div>
-                <div id="drop-field">
-                    <!--
-                    <drop-box></drop-box>
-                    <drop-box></drop-box>
-                    -->
-                </div>
-                <div id="boxes-field">
-                    <!--
-                    <drop-box></drop-box>
-                    <drop-box></drop-box>
-                    -->
+                <div id="boxes">
+                    <div id="drop-field"></div>
+                    <div id="boxes-field"></div>
                 </div>
             </div>
         </template>
@@ -331,16 +337,10 @@
                     </div>
                 </view-game-setup>
                 <view-game id="game" style="display: flex;">
-                    
+                    <div id="drop-field" slot="drop-field"></div>
+                    <div id="boxes-field" slot="boxes-field"></div>
                 </view-game>
             </div>
-            <!--
-            <drop-box></drop-box>
-            <drop-box>
-                <draggable-box slot="box-content" id="box-1"></draggable-box>
-            </drop-box>
-            <drop-box></drop-box>
-            -->
         </div>
         
     </body>

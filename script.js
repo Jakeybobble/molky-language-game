@@ -12,17 +12,25 @@ customElements.define("drop-box",
             });
             shadowRoot.appendChild(templateContent.cloneNode(true));
 
+            this.shadowRoot.getElementById("box").addEventListener("drop", (event) => this._dropEvent(event));
+            this.shadowRoot.getElementById("box").addEventListener("dragover", (event) => this._dragoverEvent(event));
+
+            
+
         }
         
         connectedCallback() {
-            this.shadowRoot.getElementById("box").addEventListener("drop", (event) => this._dropEvent(event));
-            this.shadowRoot.getElementById("box").addEventListener("dragover", (event) => this._dragoverEvent(event));
+            const game = document.querySelector("view-game");
+            this.boxes = game.shadowRoot.getElementById("boxes");
+
         }
 
         _dropEvent(event) {
             event.preventDefault();
             let data = event.dataTransfer.getData("text");
-            const box = document.getElementById(data);
+            console.log(data);
+            //const box = this.boxes.getElementById(data);
+            let box = this.boxes.querySelector("#" + data);
             console.log(box);
             if(box) {
                 // Detta frigör EventListeners som inte vill tas bort på annat sätt.
@@ -202,11 +210,17 @@ customElements.define("view-game", class extends HTMLElement {
 
         this.round = 0;
         this.round_counter = shadowRoot.getElementById("round");
-        this.nextRound();
         
+        this.drop_field = shadowRoot.getElementById("drop-field");
+        this.boxes_field = shadowRoot.getElementById("boxes-field");
+
+        this.boxes = this.shadowRoot.getElementById("boxes");
+
         shadowRoot.getElementById("next-button").addEventListener("click", () => {
             this.nextRound();
         });
+
+        this.nextRound();
 
     }
 
@@ -217,12 +231,11 @@ customElements.define("view-game", class extends HTMLElement {
         let words = phrases[this.round-1].split(" ");
         words = words.sort((a, b) => 0.5 - Math.random());
 
-        let drop_field = this.shadowRoot.getElementById("drop-field");
-        let boxes_field = this.shadowRoot.getElementById("boxes-field");
+        
 
         // Clean up
-        drop_field.innerHTML = '';
-        boxes_field.innerHTML = '';
+        this.drop_field.innerHTML = '';
+        this.boxes_field.innerHTML = '';
 
         // Create boxes
         let id_num = 0;
@@ -230,7 +243,7 @@ customElements.define("view-game", class extends HTMLElement {
             
             // Create each box in each word thing...
             let box = document.createElement("drop-box");
-            drop_field.appendChild(box);
+            this.drop_field.appendChild(box);
 
             let bottom_box = document.createElement("drop-box");
             let draggable = document.createElement("draggable-box");
@@ -242,7 +255,7 @@ customElements.define("view-game", class extends HTMLElement {
 
             bottom_box.appendChild(draggable);
             draggable.appendChild(p);
-            boxes_field.appendChild(bottom_box);
+            this.boxes_field.appendChild(bottom_box);
         }
     }
 
