@@ -264,6 +264,17 @@ customElements.define("view-game", class extends HTMLElement {
 
     }
 
+    getCompleteString() {
+        let arr = [];
+        for(let box of this.drop_field.children) {
+            if(box.children.length != 0){
+                arr.push(box.children[0].children[0].innerText);
+            }
+            
+        }
+        return arr.join(" ");
+    }
+
     getRoundString() {
         return "Phrase " + (this.round) + "/" + phrases.length;
     }
