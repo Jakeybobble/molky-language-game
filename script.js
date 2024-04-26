@@ -239,7 +239,13 @@ customElements.define("view-game", class extends HTMLElement {
     }
 
     nextRound() {
-        if(this.round != phrases.length) this.round++;
+        //if(this.round != phrases.length) this.round++;
+        if(this.round == phrases.length){
+            console.log("Game ended.");
+            setState("game-complete");
+            return;
+        }
+        this.round++;
         
         this.round_counter.innerHTML = this.getRoundString();
         let words = phrases[this.round-1].split(" ");
@@ -291,6 +297,15 @@ customElements.define("view-game", class extends HTMLElement {
 
     getRoundString() {
         return "Phrase " + (this.round) + "/" + phrases.length;
+    }
+});
+
+customElements.define("view-complete", class extends HTMLElement {
+    constructor() {
+        super();
+
+        const shadowRoot = this.attachShadow({ mode: "open" });
+        shadowRoot.appendChild(document.getElementById("view-complete").content.cloneNode(true));
     }
 });
 
@@ -346,6 +361,13 @@ function setState(_view) {
                 hideAll();
                 game.style.display = "flex";
                 document.getElementById("game").nextRound();
+            });
+        }
+        case "game-complete": {
+            let complete = views.children[3];
+            showLoading(() => {
+                hideAll();
+                complete.style.display = "flex";
             });
         }
     }

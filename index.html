@@ -305,6 +305,24 @@
             </div>
         </template>
 
+        <template id="view-complete">
+            <style>
+                #box {
+                    display: flex;
+                    width: 100%;
+                    border-radius: 10px;
+                    flex-direction: column;
+                    align-items: center;
+                }
+            </style>
+            <div id="box">
+                <h2>Game complete!</h2>
+                <h3>You got x out of x phrases correct...</h3>
+                <slot name="errors"></slot>
+                <slot name="lizard"></slot>
+            </div>
+        </template>
+
         <!-- Actual body content -->
 
         <view-loading id="loading-view"></view-loading>
@@ -340,10 +358,21 @@
                         <setup-entry><p slot="text">How are you doing?</p></setup-entry>
                     </div>
                 </view-game-setup>
-                <view-game id="game" style="display: flex;">
+                <view-game id="game" style="display: none;">
                     <div id="drop-field" slot="drop-field"></div>
                     <div id="boxes-field" slot="boxes-field"></div>
                 </view-game>
+                <view-complete id="game-complete" style="display: flex;">
+                    <div slot="errors" id="errors">
+                        <ul id="error-list">
+                            <li class="error-list-item">Bla bla</li>
+                        </ul>
+                        <picture>
+                            <source srcset="lizard-silly.png" media="(max-width: 500px)">
+                            <img src="lizard-big.png" alt="Winning lizard says hello." style="width: 100%; height: auto;">
+                        </picture>
+                    </div>
+                </view-complete>
             </div>
         </div>
         

@@ -42,3 +42,20 @@ body {
     padding: 30px 30px;
     flex: 1;
 }
+
+#error-list {
+    list-style: none;
+    margin-left: 0;
+    padding-left: 0;
+}
+
+.error-list-item {
+    padding-left: 1em;
+    text-indent: -1em;
+}
+.error-list-item::before {
+    content: "X";
+    padding-right: 5px;
+    color: red;
+    font-weight: 900;
+}
