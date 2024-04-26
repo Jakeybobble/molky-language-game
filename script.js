@@ -168,17 +168,40 @@ customElements.define("view-game-setup", class extends HTMLElement {
 
         start_button.addEventListener("click", () => {
             let entries = document.getElementById("entries");
+            if(entries.children.length == 0) {
+                return;
+            }
             phrases = [];
-            console.log(phrases);
             for(let _c of entries.children) {
                 let value = _c.children[0].innerText;
                 phrases.push(value);
             }
-            //console.log(phrases);
-            phrases = phrases.sort((a, b) => 0.5 - Math.random());
-            //console.log(phrases);
+
+            this.saveData();
+
+            phrases_scrambled = phrases.sort((a, b) => 0.5 - Math.random());
             setState("game");
         });
+
+        this.loadData();
+    }
+
+    loadData() {
+        fetch("savedata.json").then((response) => {
+            return response.text();
+        }).then((data) => {
+            let _json = JSON.parse(data);
+            for(let _entry of _json["phrases"]) {
+                this.addEntry(_entry);
+            }
+            
+        }).catch((error) => {
+            console.log(error);
+        });
+    }
+
+    saveData() {
+        // Kan inte spara data eftersom att det skulle kräva node av vad jag förstår.
     }
 
     addEntry(_input) {
@@ -197,6 +220,7 @@ customElements.define("view-game-setup", class extends HTMLElement {
 });
 
 let phrases = ["Testing sentence number one.", "This is test number two."];
+let phrases_scrambled = [];
 let guessed_phrases = [];
 
 customElements.define("setup-entry", class extends HTMLElement {
@@ -234,24 +258,24 @@ customElements.define("view-game", class extends HTMLElement {
             this.nextRound();
         });
 
-        this.nextRound();
+        //this.nextRound(); // Only during debug.
 
     }
 
+    reset() {
+        this.round = 0;
+    }
+
     nextRound() {
-        //if(this.round != phrases.length) this.round++;
-        if(this.round == phrases.length){
-            console.log("Game ended.");
-            setState("game-complete");
+        if(this.round == phrases_scrambled.length){
+            document.getElementById("game-complete").bringForth();
             return;
         }
         this.round++;
         
         this.round_counter.innerHTML = this.getRoundString();
-        let words = phrases[this.round-1].split(" ");
+        let words = phrases_scrambled[this.round-1].split(" ");
         words = words.sort((a, b) => 0.5 - Math.random());
-
-        
 
         // Clean up
         this.drop_field.innerHTML = '';
@@ -296,7 +320,7 @@ customElements.define("view-game", class extends HTMLElement {
     }
 
     getRoundString() {
-        return "Phrase " + (this.round) + "/" + phrases.length;
+        return "Phrase " + (this.round) + "/" + phrases_scrambled.length;
     }
 });
 
@@ -306,7 +330,53 @@ customElements.define("view-complete", class extends HTMLElement {
 
         const shadowRoot = this.attachShadow({ mode: "open" });
         shadowRoot.appendChild(document.getElementById("view-complete").content.cloneNode(true));
+
+        shadowRoot.getElementById("restart-button").addEventListener("click", () => {
+            setState("game-setup");
+        });
+
     }
+
+    bringForth() {
+        console.log("Game complete.");
+        setState("game-complete");
+
+        const ul = document.getElementById("error-list");
+        ul.innerHTML = ""; // Empty it.
+
+        let errors = 0;
+        // Calculate score
+        for(let x = 0; x < phrases_scrambled.length; x++) {
+            let phrase = phrases_scrambled[x];
+            let guessed_phrase = guessed_phrases[x];
+            if(phrase != guessed_phrase){
+                errors++;
+
+                let li = document.createElement("li");
+
+                li.className = "error-list-item";
+                console.log(guessed_phrase);
+                li.innerText = `Got ${guessed_phrase == "" ? "empty" : '"'+guessed_phrase+'"'} | Correct: ${phrase}`;
+
+                ul.appendChild(li);
+            }
+        }
+        this.shadowRoot.querySelector("h3").innerText = this.getPhrasesCorrectString(errors);
+        let lizard = document.getElementById("lizard");
+        lizard.style.display = "none";
+        if((phrases_scrambled.length - errors) == phrases_scrambled.length){
+            lizard.style.display = "flex";
+        }
+
+
+
+    }
+
+    getPhrasesCorrectString(errors) {
+        let str = `You got ${phrases_scrambled.length - errors} out of ${phrases_scrambled.length} correct${(phrases_scrambled.length - errors) == phrases_scrambled.length ? "!" : "."}`;
+        return str;
+    }
+
 });
 
 customElements.define("pink-lizard", class extends HTMLElement {
@@ -351,26 +421,27 @@ function setState(_view) {
             start.style.display = "flex";
             break;
         case "game-setup":
+            document.getElementById("game").reset();
             let game_setup = views.children[1];
-           hideAll();
-           game_setup.style.display = "flex";
+            hideAll();
+            game_setup.style.display = "flex";
             
             break;
-        case "game": {
+        case "game":
             let game = views.children[2];
             showLoading(() => {
                 hideAll();
                 game.style.display = "flex";
                 document.getElementById("game").nextRound();
             });
-        }
-        case "game-complete": {
+            break;
+        case "game-complete":
             let complete = views.children[3];
             showLoading(() => {
                 hideAll();
                 complete.style.display = "flex";
             });
-        }
+            break;
     }
 }
 

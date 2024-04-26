@@ -350,12 +350,24 @@
 
         <view-info id="info">
             <h2 slot="title">The obligatory info page.</h2>
-            <p slot="text">Made by Jacob G.S. as an assignment for his JavaScript Part 2 class.<br><br>(You can click outside this window to close it)</p>
+            <p slot="text">Made by Jacob G.S. as an assignment for his JavaScript Part 2 class.<br>
+                When the game is opened, phrases are read from savedata.json.
+                <br><br>(You can click outside this window to close it)</p>
         </view-info>
 
         <view-info id="tutorial">
-            <h2 slot="title">Tutorial.</h2>
-            <p slot="text">Do stuff.</p>
+            <h2 slot="title">How 2 play.</h2>
+            <p slot="text">
+                In this game you'll be putting phrases back into the right order.
+                <br>
+                Start by adding phrases, these will later be separated by spaces and shuffled.
+                <br>
+                Drag and drop each item into the squares in the right order (reading order), and press the Next button until you've completed the game!
+                <br>
+                In the game completion view you will see what phrases you ordered wrong. Keep on practicing! If you do well, the pink lizard will appear in real life and give you a high-five, so be careful.
+                <br>
+                That's it aaaaaaaaaaaa
+            </p>
         </view-info>
 
         <div>
@@ -363,7 +375,6 @@
                 <div class="container-fluid" style="display: flex; flex-wrap: wrap;">
                     <h1 style="color: white;">Mölky Language Game.</h1>
                     <ul id="bar-list">
-                        <!-- To-do: Make buttons out of these, maybe. -->
                         <li><a href="javascript:showTutorial()">How 2 Play</a></li>
                         <li><a href="javascript:showInfo()">Info</a></li>
                     </ul>
@@ -373,22 +384,27 @@
 
         <div id="middle-body" class="container">
             <div id="views">
-                <view-start id="start" style="display: none; align-content: center; justify-content: center;"></view-start>
+                <view-start id="start" style="display: flex; align-content: center; justify-content: center;"></view-start>
                 <view-game-setup id="game-setup" style="display: none; justify-content: center;">
                     <div slot="entries" id="entries">
-                        <setup-entry><p slot="text">How are you doing?</p></setup-entry>
+                        <!--
+                            <setup-entry><p slot="text">How are you doing?</p></setup-entry>
+                        -->
                     </div>
                 </view-game-setup>
                 <view-game id="game" style="display: none;">
                     <div id="drop-field" slot="drop-field"></div>
                     <div id="boxes-field" slot="boxes-field"></div>
                 </view-game>
-                <view-complete id="game-complete" style="display: flex;">
+                <view-complete id="game-complete" style="display: none;">
                     <div slot="errors" id="errors">
                         <ul id="error-list">
-                            <li class="error-list-item">Bla bla</li>
+                            <!--
+                                <li class="error-list-item">Bla bla</li>
+                            -->
+                            
                         </ul>
-                        <pink-lizard style="width: 50%;"></pink-lizard>
+                        <pink-lizard id="lizard" style="width: 50%; display: none;"></pink-lizard>
                     </div>
                 </view-complete>
             </div>
