@@ -34,6 +34,8 @@
                     background-color: crimson;
                     display: flex; align-items: center; justify-content: center;
                     border-radius: 10px;
+                    cursor: move;
+                    transition: 0.2s;
                 }
                 ::slotted(p) {
                     user-select: none;
@@ -294,7 +296,7 @@
 
             </style>
             <div id="box">
-                <h2 id="round">Phrase 1/5</h2>
+                <h2 id="round">Phrase #???</h2>
                 <div id="next-button">Next</div>
                 <div id="boxes">
                     <div id="drop-field"></div>
@@ -332,17 +334,13 @@
 
         <div id="middle-body" class="container">
             <div id="views">
-                <view-start id="start" style="display: flex; align-content: center; justify-content: center;"></view-start>
+                <view-start id="start" style="display: none; align-content: center; justify-content: center;"></view-start>
                 <view-game-setup id="game-setup" style="display: none; justify-content: center;">
                     <div slot="entries" id="entries">
                         <setup-entry><p slot="text">How are you doing?</p></setup-entry>
-                        <setup-entry><p slot="text">What's the matter?</p></setup-entry>
-                        <setup-entry><p slot="text">Are you scared?</p></setup-entry>
-                        <setup-entry><p slot="text">Are you going to fight me?</p></setup-entry>
-                        <setup-entry><p slot="text">Heck.</p></setup-entry>
                     </div>
                 </view-game-setup>
-                <view-game id="game" style="display: none;">
+                <view-game id="game" style="display: flex;">
                     <div id="drop-field" slot="drop-field"></div>
                     <div id="boxes-field" slot="boxes-field"></div>
                 </view-game>

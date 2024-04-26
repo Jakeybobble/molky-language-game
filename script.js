@@ -27,17 +27,28 @@ customElements.define("drop-box",
 
         _dropEvent(event) {
             event.preventDefault();
+
             let data = event.dataTransfer.getData("text");
-            console.log(data);
-            //const box = this.boxes.getElementById(data);
             let box = this.boxes.querySelector("#" + data);
-            console.log(box);
-            if(box) {
-                // Detta frigör EventListeners som inte vill tas bort på annat sätt.
-                let a = box.cloneNode(true);
-                box.remove();
-                this.appendChild(a);
+
+            let current_box = this.children[0];
+            if(box) { // Make sure no phantom draggables are being dragged...
+                if(current_box == null) {
+                    let a = box.cloneNode(true);
+                    box.remove();
+                    this.appendChild(a);
+                } else {
+                    let other_parent = box.parentElement;
+                    let send_box = current_box.cloneNode(true);
+                    let receive_box = box.cloneNode(true);
+                    current_box.remove();
+                    box.remove();
+                    this.appendChild(receive_box);
+                    other_parent.appendChild(send_box);
+                }
+                
             }
+            
             
         }
 
@@ -158,6 +169,7 @@ customElements.define("view-game-setup", class extends HTMLElement {
         start_button.addEventListener("click", () => {
             let entries = document.getElementById("entries");
             phrases = [];
+            console.log(phrases);
             for(let _c of entries.children) {
                 let value = _c.children[0].innerText;
                 phrases.push(value);
@@ -333,6 +345,7 @@ function setState(_view) {
             showLoading(() => {
                 hideAll();
                 game.style.display = "flex";
+                document.getElementById("game").nextRound();
             });
         }
     }
